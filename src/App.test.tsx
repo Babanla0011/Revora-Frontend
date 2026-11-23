@@ -131,5 +131,25 @@ describe('App Components Accessibility', () => {
 
     expect(activeLinks).toHaveLength(1);
     expect(screen.getByRole('link', { name: activeName })).toHaveAttribute('aria-current', 'page');
+  it('renders home section list items without literal bullet characters and preserves plain-text items', () => {
+    renderAtPath('/');
+
+    const lists = screen.getAllByRole('list');
+    expect(lists.length).toBeGreaterThanOrEqual(3);
+
+    const items = screen.getAllByRole('listitem');
+    expect(items.length).toBeGreaterThan(0);
+
+    for (const item of items) {
+      expect(item.textContent).not.toContain('•');
+    }
+
+    const configureItem = screen.getByText('Configure RevenueShare offerings');
+    expect(configureItem.tagName.toLowerCase()).toBe('li');
+    expect(configureItem.querySelector('a')).toBeNull();
+
+    const investItem = screen.getByText('Invest using USDC on Stellar');
+    expect(investItem.tagName.toLowerCase()).toBe('li');
+    expect(investItem.querySelector('a')).toBeNull();
   });
 });
