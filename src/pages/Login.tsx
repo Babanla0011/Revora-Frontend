@@ -2,7 +2,7 @@ import { ConnectWalletButton } from '../components/WalletConnection/ConnectWalle
 import React, { useState } from 'react';
 import { AuthLayout } from '../components/AuthLayout';
 import { TwoFactorSetup } from '../components/TwoFactorSetup';
-import { Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/Button';
 import { FormError } from '../components/FormError';

@@ -14,7 +14,7 @@ import type {
   IssuerDashboardHeroProps,
 } from '../components/IssuerDashboardHero';
 import { RevenueReportingCalendar } from '../components/RevenueReportingCalendar';
-import type { RevenueReport, ReportStatus } from '../components/RevenueReportingCalendar.types';
+import type { RevenueReport } from '../components/RevenueReportingCalendar.types';
 
 /* ─── Helper ────────────────────────────────────────────────────────── */
 

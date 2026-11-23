@@ -65,7 +65,7 @@ export const createRpcServer = () => new rpc.Server(RPC_URL);
  */
 let _rpcServerFactory = createRpcServer;
 
-export function setRpcServerFactory(factory: () => any) {
+export function setRpcServerFactory(factory: () => ReturnType<typeof createRpcServer>) {
   _rpcServerFactory = factory;
 }
 
@@ -129,7 +129,7 @@ export async function getPeriod(periodId: number): Promise<Period | null> {
       NETWORK_PASSPHRASE,
     );
     return result;
-  } catch (error) {
+  } catch {
     // Return null if period doesn't exist or query fails
     return null;
   }
@@ -162,7 +162,7 @@ export async function getBeneficiaries(periodId: number): Promise<string[] | nul
       NETWORK_PASSPHRASE,
     );
     return result;
-  } catch (error) {
+  } catch {
     return null;
   }
 }

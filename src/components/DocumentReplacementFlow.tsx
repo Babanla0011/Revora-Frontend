@@ -565,6 +565,9 @@ const UploadStep: React.FC<UploadStepProps> = ({
     if (preselected) {
       onNext(preselected);
     }
+    // Mount-only by design: re-running when the parent passes a new `onNext`
+    // or `preselected` would advance the flow again.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const processFile = useCallback(
@@ -1066,7 +1069,7 @@ export const DocumentReplacementFlow: React.FC<DocumentReplacementFlowProps> = (
             ? await onComputeDiff(oldVersion, newVersion)
             : computeMockDiff(oldVersion, newVersion);
           setDiff(result);
-        } catch (e) {
+        } catch {
           setDiff(computeMockDiff(oldVersion, newVersion));
         } finally {
           setDiffLoading(false);

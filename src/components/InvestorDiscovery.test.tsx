@@ -20,8 +20,6 @@ expect.extend(toHaveNoViolations);
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-const noop = () => {};
-
 /** Mirror of MOCK_OFFERINGS in InvestorDiscovery.tsx for test assertions */
 const MOCK_OFFERINGS = [
   { id: 1, name: 'TechFlow AI', category: 'Enterprise SaaS', revenueShare: 15, target: 250000, raised: 112500 },
@@ -527,7 +525,7 @@ describe('PayoutSchedule', () => {
 
 // ─── Ledger Entries Section Tests (Issue #628) ──────────────────────────────
 
-import { LedgerEntriesSection, generateLedgerEntries, LedgerEntry } from './InvestorDiscovery';
+import { LedgerEntriesSection, generateLedgerEntries } from './InvestorDiscovery';
 
 describe('LedgerEntriesSection – Issue #628', () => {
   const entries = generateLedgerEntries(12);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { RevenueReportingCalendar } from '../components/RevenueReportingCalendar';
-import { RevenueReport, ReportStatus } from '../components/RevenueReportingCalendar.types';
+import { RevenueReport } from '../components/RevenueReportingCalendar.types';
 
 /* ─── Mock Data ────────────────────────────────────────────────────── */
 

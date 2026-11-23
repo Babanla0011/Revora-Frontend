@@ -36,7 +36,6 @@ import {
   Menu,
   List,
   Upload,
-  LayoutGrid,
   TrendingUp,
   TrendingDown,
   Minus,
@@ -47,9 +46,7 @@ import {
   formatDate,
   formatCurrency,
   SupportedLocale,
-  LOCALE_FORMAT_SETTINGS,
 } from "../constants/i18n";
-import { TERMINOLOGY } from "../constants/terminology";
 import { Button } from "./Button";
 import {
   RevenueReportingCalendarProps,
@@ -59,7 +56,6 @@ import {
   ReportStatus,
   REPORT_STATUS_LABELS,
   REPORT_STATUS_COLORS,
-  OverdueSeverity,
   OVERDUE_SEVERITY_LABELS,
   OVERDUE_SEVERITY_COLORS,
   getOverdueDays,
@@ -81,10 +77,6 @@ function parseISODate(iso: string): {
 } {
   const [y, m, d] = iso.split("-").map(Number);
   return { year: y, month: m - 1, day: d };
-}
-
-function isSameDay(a: string, b: string): boolean {
-  return a === b;
 }
 
 function isToday(iso: string): boolean {
@@ -524,7 +516,7 @@ interface CalendarDayCellProps {
 const CalendarDayCell: React.FC<CalendarDayCellProps> = ({
   cell,
   isFocused,
-  weekStartsOn,
+  weekStartsOn: _weekStartsOn,
   onSelect,
   onFocus,
   locale,
@@ -666,7 +658,7 @@ interface CalendarGridComponentProps {
 
 const CalendarGridComponent: React.FC<CalendarGridComponentProps> = ({
   days,
-  selectedDates,
+  selectedDates: _selectedDates,
   focusedDate,
   weekStartsOn,
   onDateSelect,
@@ -698,15 +690,6 @@ const CalendarGridComponent: React.FC<CalendarGridComponentProps> = ({
     }
     return result;
   }, [days]);
-
-  // Roving tabindex: only the focused/selected day is tabbable
-  const getTabIndex = useCallback(
-    (cell: DayCellData) => {
-      if (cell.date === focusedDate || selectedDates.includes(cell.date)) return 0;
-      return -1;
-    },
-    [focusedDate, selectedDates],
-  );
 
   // Focus the active cell when focusedDate changes
   useEffect(() => {
@@ -873,7 +856,7 @@ const DetailsPanel: React.FC<DetailsPanelProps> = ({
   viewMonth,
   locale,
   onSubmitReport,
-  onReportAction,
+  onReportAction: _onReportAction,
   isOpen = true,
   onClose,
 }) => {
@@ -1197,7 +1180,7 @@ interface AgendaViewProps {
 const AgendaView: React.FC<AgendaViewProps> = ({
   reports,
   selectedDate,
-  locale,
+  locale: _locale,
   onSelect,
   onSubmitReport,
   viewMonth,
@@ -1346,7 +1329,7 @@ export const RevenueReportingCalendar: React.FC<
         
         // Include all dates in the range
         const range: string[] = [];
-        let curr = new Date(minDate);
+        const curr = new Date(minDate);
         while (curr <= maxDate) {
           range.push(curr.toISOString().split('T')[0]);
           curr.setDate(curr.getDate() + 1);

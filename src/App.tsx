@@ -13,7 +13,6 @@ import { Signup } from "./pages/Signup";
 import { ForgotPassword } from "./pages/ForgotPassword";
 import { TwoFactorRecoveryPage } from "./pages/TwoFactorRecoveryPage";
 import TwoFactorBackupCodesPage from "./pages/TwoFactorBackupCodesPage";
-import { DesignTokensPage } from "./pages/DesignTokens/DesignTokensPage";
 import { InvestorDiscovery } from "./components/InvestorDiscovery"; // Import here
 import { InvestorPortfolioSummary } from "./pages/InvestorPortfolioSummary";
 import { RevenueReportForm } from "./components/RevenueReportForm";
@@ -21,7 +20,6 @@ import { LedgerDemoPage } from "./pages/LedgerDemoPage";
 import { OfferingRegistrationDemo } from "./pages/OfferingRegistrationDemo";
 import NotificationBell from "./components/Notifications/NotificationBell";
 import { notificationsMock } from "./components/Notifications/notificationsData";
-import { OfferingWizardSummary } from "./pages/OfferingWizardSummary";
 import { ScheduledExportsPage } from "./pages/ScheduledExportsPage";
 import { StartupDashboard } from "./pages/StartupDashboard";
 import { GovernanceProposalCreatePage } from "./pages/GovernanceProposalCreatePage";

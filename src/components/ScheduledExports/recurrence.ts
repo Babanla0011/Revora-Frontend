@@ -132,7 +132,7 @@ export function computeNextRun(rule: RecurrenceRule, after?: Date): string {
   // ── Step 3: Snap to the correct day-of-week / day-of-month ──────────
   if (rule.frequency === 'weekly' && rule.dayOfWeek !== undefined) {
     const targetDay = rule.dayOfWeek;
-    let currentDay = candidate.getUTCDay();
+    const currentDay = candidate.getUTCDay();
     let diff = targetDay - currentDay;
     if (diff < 0) diff += 7;
     if (diff > 0) {
@@ -161,7 +161,7 @@ export function computeNextRun(rule: RecurrenceRule, after?: Date): string {
       case 'weekly': {
         candidate = new Date(candidate.getTime() + 7 * 24 * 60 * 60 * 1000);
         const targetDay = rule.dayOfWeek!;
-        let currentDay = candidate.getUTCDay();
+        const currentDay = candidate.getUTCDay();
         let diff = targetDay - currentDay;
         if (diff < 0) diff += 7;
         if (diff > 0) {
