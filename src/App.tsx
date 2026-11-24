@@ -16,6 +16,9 @@ import {
   useOptionalAuth,
   writeStoredAuthSession,
 } from "./components/AuthProvider";
+  useLocation,
+} from "react-router-dom";
+import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
 import { Login } from "./pages/Login";
 import { Signup } from "./pages/Signup";
 import { I18nProvider, useI18n } from "./i18n/I18nProvider";
@@ -243,6 +246,7 @@ function AppLayout() {
     navigate("/login", { replace: true });
   };
 
+  const location = useLocation();
   const handleSkipToContent = (event: MouseEvent<HTMLAnchorElement>) => {
     const main = document.getElementById("main-content");
     if (!main) return;
@@ -325,6 +329,9 @@ function AppLayout() {
         <GovernanceProposalsProvider>
           <Outlet />
         </GovernanceProposalsProvider>
+        <ErrorBoundary resetKey={location.key}>
+          <Outlet />
+        </ErrorBoundary>
       </main>
       <SiteFooter />
     </NotificationProvider>
