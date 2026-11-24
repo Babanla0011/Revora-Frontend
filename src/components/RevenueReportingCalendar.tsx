@@ -670,7 +670,6 @@ const CalendarGridComponent: React.FC<CalendarGridComponentProps> = ({
             key={i}
             className="rc-grid-header-cell"
             role="columnheader"
-            aria-hidden="true"
           >
             {name}
           </div>
@@ -835,7 +834,7 @@ const DetailsPanel: React.FC<DetailsPanelProps> = ({
   });
 
   return (
-    <aside
+    <section
       className={`rc-details-panel ${isOpen ? "rc-details-panel--open" : "rc-details-panel--closed"}`}
       aria-label="Report details panel"
     >
@@ -973,7 +972,7 @@ const DetailsPanel: React.FC<DetailsPanelProps> = ({
           )}
         </div>
       )}
-    </aside>
+    </section>
   );
 };
 

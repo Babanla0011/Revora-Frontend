@@ -189,7 +189,7 @@ export const StartupDashboard: React.FC = () => {
       <IssuerDashboardHero {...heroProps} />
 
       {/* ── Revenue Reporting Calendar ── */}
-      <section aria-labelledby="calendar-section-heading">
+      <div>
         <h2
           id="calendar-section-heading"
           className="text-xl font-semibold text-main mb-4"
@@ -210,7 +210,7 @@ export const StartupDashboard: React.FC = () => {
           onMonthChange={setViewMonth}
           onSubmitReport={(date) => navigate(revenueSubmissionUrl(date))}
         />
-      </section>
+      </div>
 
       {/* ── Navigation ── */}
       <nav aria-label="Startup navigation" className="flex flex-wrap gap-4 text-sm">

@@ -57,7 +57,95 @@ interface TimelineFailure {
   reason: string;
 }
 
+type SorobanPhase =
+  | 'idle'
+  | 'simulating'
+  | 'simulated'
+  | 'signing'
+  | 'submitting'
+  | 'polling'
+  | 'confirmed'
+  | 'error';
 
+interface SimulationSummary {
+  preparedTransaction: Transaction;
+  estimatedFeeXlm: string;
+  estimatedFeeStroops: string;
+}
+
+interface TimelineFailure {
+  step: 'simulate' | 'sign' | 'submit' | 'confirm';
+  reason: string;
+}
+
+
+
+function buildSorobanMilestones(
+  phase: SorobanPhase,
+  failure: TimelineFailure | null,
+  pollAttempt: number,
+  estimatedFeeXlm?: string,
+): Milestone[] {
+  const resolveStatus = (
+    step: 'simulate' | 'sign' | 'submit' | 'confirm',
+    completedPhases: SorobanPhase[],
+    activePhases: SorobanPhase[],
+  ): MilestoneStatus => {
+    if (failure?.step === step) return 'blocked';
+    if (completedPhases.includes(phase)) return 'completed';
+    if (activePhases.includes(phase)) return 'in-progress';
+    return 'pending';
+  };
+
+  return [
+    {
+      id: 'simulate',
+      label: 'Simulate',
+      description:
+        failure?.step === 'simulate'
+          ? failure.reason
+          : estimatedFeeXlm
+            ? `Estimated fee: ${estimatedFeeXlm}`
+            : 'Verify contract call & fee',
+      status: resolveStatus(
+        'simulate',
+        ['simulated', 'signing', 'submitting', 'polling', 'confirmed'],
+        ['simulating'],
+      ),
+    },
+    {
+      id: 'sign',
+      label: 'Sign',
+      description:
+        failure?.step === 'sign'
+          ? failure.reason
+          : 'Approve in Freighter (Testnet)',
+      status: resolveStatus('sign', ['submitting', 'polling', 'confirmed'], ['signing']),
+    },
+    {
+      id: 'submit',
+      label: 'Submit',
+      description:
+        failure?.step === 'submit'
+          ? failure.reason
+          : 'Broadcast to Soroban RPC',
+      status: resolveStatus('submit', ['polling', 'confirmed'], ['submitting']),
+    },
+    {
+      id: 'confirm',
+      label: 'Confirm',
+      description:
+        failure?.step === 'confirm'
+          ? failure.reason
+          : phase === 'polling'
+            ? `Polling ledger (attempt ${Math.max(1, pollAttempt)})…`
+            : phase === 'confirmed'
+              ? 'Confirmed on Stellar Testnet'
+              : 'Await ledger finality',
+      status: resolveStatus('confirm', ['confirmed'], ['polling']),
+    },
+  ];
+}
 
 function buildSorobanMilestones(
   phase: SorobanPhase,
