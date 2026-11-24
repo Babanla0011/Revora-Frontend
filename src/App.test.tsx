@@ -29,6 +29,13 @@ function withProviders(ui: ReactElement, user: AuthUser | null = null) {
     <AuthProvider initialUser={user}>
       <WalletConnectionProvider>{ui}</WalletConnectionProvider>
     </AuthProvider>
+import { ThemeProvider } from "./components/ThemeProvider";
+
+function withProviders(ui: ReactElement) {
+  return (
+    <ThemeProvider>
+      <WalletConnectionProvider>{ui}</WalletConnectionProvider>
+    </ThemeProvider>
   );
 }
 
