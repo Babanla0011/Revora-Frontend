@@ -56,6 +56,7 @@ import { GovernanceProposalDetailPage } from "./pages/GovernanceProposalDetailPa
 import { GovernanceDelegationPage } from "./pages/GovernanceDelegationPage";
 import { GovernanceProposalsProvider } from "./context/GovernanceProposalsContext";
 import { AdminAlertsInbox } from "./pages/AdminAlertsInbox";
+import { AuditTrailPage } from "./pages/AuditTrailPage";
 import { PayoutSchedule } from "./pages/PayoutSchedule";
 import { MultiIssuerComparisonView } from "./pages/MultiIssuerComparisonView";
 import { GovernanceVoteReceiptDemo } from "./pages/GovernanceVoteReceiptDemo";
@@ -306,6 +307,10 @@ export const routes: RouteObject[] = [
           { path: "scheduled-exports", element: <ScheduledExportsPage /> },
         ],
       },
+      { path: "/admin", element: <Navigate to="/admin/alerts" replace /> },
+      { path: "/admin/alerts", element: <AdminAlertsInbox /> },
+      { path: "/admin/audit", element: <AuditTrailPage /> },
+      { path: "/admin/scheduled-exports", element: <ScheduledExportsPage /> },
 
       { path: "*", element: <Placeholder title="Page not found" /> },
     ],
@@ -568,6 +573,7 @@ function Home() {
             <h2 className="home-section-title">{t("home.admin-account")}</h2>
             <ul className="home-list">
               <li><Link to="/admin/alerts" className="link-styled">Alerts inbox</Link></li>
+              <li><Link to="/admin/audit" className="link-styled">Audit trail</Link></li>
               <li><Link to="/admin/scheduled-exports" className="link-styled">Scheduled exports</Link></li>
               <li><Link to="/settings/2fa/backup-codes" className="link-styled">2FA backup codes</Link></li>
               <li><Link to="/recover-2fa" className="link-styled">2FA recovery</Link></li>
