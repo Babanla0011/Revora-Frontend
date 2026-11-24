@@ -1,4 +1,5 @@
 import { useEffect, useState, type MouseEvent } from "react";
+import { lazy, Suspense, useState, type MouseEvent } from "react";
 import {
   createBrowserRouter,
   Link,
@@ -57,8 +58,13 @@ import { PayoutSchedule } from "./pages/PayoutSchedule";
 import { MultiIssuerComparisonView } from "./pages/MultiIssuerComparisonView";
 import { GovernanceVoteReceiptDemo } from "./pages/GovernanceVoteReceiptDemo";
 import { SettingsPage } from "./pages/SettingsPage";
+  useLocation,
+} from "react-router-dom";
+import NotificationBell from "./components/Notifications/NotificationBell";
+import { notificationsMock } from "./components/Notifications/notificationsData";
+import { PageLoader } from "./components/PageLoader";
+import { RouteErrorBoundary } from "./components/RouteErrorBoundary";
 import { useContractRead } from "./hooks/useContractRead";
-import { getContractSummary } from "./lib/soroban/revoraContract";
 import {
   CONTRACT_ID,
   buildContractExplorerUrl,
@@ -67,12 +73,67 @@ import {
 import { ThemeToggle } from "./components/ThemeToggle";
 import { LIVE_URL, REPO_URL } from "./constants/links";
 
+const Login = lazy(() => import("./pages/Login").then((m) => ({ default: m.Login })));
+const Signup = lazy(() => import("./pages/Signup").then((m) => ({ default: m.Signup })));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword").then((m) => ({ default: m.ForgotPassword })));
+const TwoFactorRecoveryPage = lazy(() =>
+  import("./pages/TwoFactorRecoveryPage").then((m) => ({ default: m.TwoFactorRecoveryPage })),
+);
+const TwoFactorBackupCodesPage = lazy(() => import("./pages/TwoFactorBackupCodesPage"));
+const InvestorDiscovery = lazy(() =>
+  import("./components/InvestorDiscovery").then((m) => ({ default: m.InvestorDiscovery })),
+);
+const InvestorPortfolioSummary = lazy(() =>
+  import("./pages/InvestorPortfolioSummary").then((m) => ({ default: m.InvestorPortfolioSummary })),
+);
+const RevenueReportForm = lazy(() =>
+  import("./components/RevenueReportForm").then((m) => ({ default: m.RevenueReportForm })),
+);
+const LedgerDemoPage = lazy(() =>
+  import("./pages/LedgerDemoPage").then((m) => ({ default: m.LedgerDemoPage })),
+);
+const OfferingRegistrationDemo = lazy(() =>
+  import("./pages/OfferingRegistrationDemo").then((m) => ({ default: m.OfferingRegistrationDemo })),
+);
+const ScheduledExportsPage = lazy(() =>
+  import("./pages/ScheduledExportsPage").then((m) => ({ default: m.ScheduledExportsPage })),
+);
+const StartupDashboard = lazy(() =>
+  import("./pages/StartupDashboard").then((m) => ({ default: m.StartupDashboard })),
+);
+const KycWizardPage = lazy(() =>
+  import("./pages/KycWizardPage").then((m) => ({ default: m.KycWizardPage })),
+);
+const GovernanceProposalCreatePage = lazy(() =>
+  import("./pages/GovernanceProposalCreatePage").then((m) => ({
+    default: m.GovernanceProposalCreatePage,
+  })),
+);
+const AdminAlertsInbox = lazy(() =>
+  import("./pages/AdminAlertsInbox").then((m) => ({ default: m.AdminAlertsInbox })),
+);
+const PayoutSchedule = lazy(() =>
+  import("./pages/PayoutSchedule").then((m) => ({ default: m.PayoutSchedule })),
+);
+const GovernanceVoteReceiptDemo = lazy(() =>
+  import("./pages/GovernanceVoteReceiptDemo").then((m) => ({
+    default: m.GovernanceVoteReceiptDemo,
+  })),
+);
+
+const LIVE_URL = "https://revora-frontend-omega.vercel.app";
+const REPO_URL = "https://github.com/RevoraOrg/Revora-Frontend";
 const STELLAR_LAB_URL = buildStellarLabUrl();
 const STELLAR_EXPERT_URL = buildContractExplorerUrl();
 
+async function loadContractSummary() {
+  const { getContractSummary } = await import("./lib/soroban/revoraContract");
+  return getContractSummary();
+}
+
 function SiteFooter() {
   const { data: contractSummary, isLoading, isError, error, retry } = useContractRead(
-    getContractSummary,
+    loadContractSummary,
     { key: 'contract-summary', retryCount: 2, retryDelay: 1000 },
   );
 
@@ -343,6 +404,11 @@ function AppLayout() {
         <ErrorBoundary resetKey={location.key}>
           <Outlet />
         </ErrorBoundary>
+        <RouteErrorBoundary resetKey={location.pathname}>
+          <Suspense fallback={<PageLoader label="Loading page..." />}>
+            <Outlet />
+          </Suspense>
+        </RouteErrorBoundary>
       </main>
       <SiteFooter />
     </NotificationProvider>
