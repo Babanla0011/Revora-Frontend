@@ -34,6 +34,7 @@ import { TwoFactorRecoveryPage } from "./pages/TwoFactorRecoveryPage";
 import TwoFactorBackupCodesPage from "./pages/TwoFactorBackupCodesPage";
 import { SecuritySettingsPage } from "./pages/SecuritySettingsPage";
 import { DesignTokensPage } from "./pages/DesignTokens/DesignTokensPage";
+import { OfferingProspectusPage } from "./pages/OfferingProspectusPage";
 import { InvestorDiscovery } from "./components/InvestorDiscovery"; // Import here
 import { InvestorPortfolioSummary } from "./pages/InvestorPortfolioSummary";
 import { RevenueReportForm } from "./components/RevenueReportForm";
@@ -172,6 +173,7 @@ export const routes: RouteObject[] = [
       },
       { path: "/investor", element: <Navigate to="/investor/portal" replace /> },
       { path: "/investor/portal", element: <InvestorDiscovery /> },
+      { path: "/offerings/:id", element: <OfferingProspectusPage /> },
       { path: "/investor/portfolio", element: <InvestorPortfolioSummary /> },
       { path: "/investor/payouts", element: <PayoutSchedule /> },
       { path: "/investor/compare", element: <MultiIssuerComparisonView /> },
