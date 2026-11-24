@@ -20,7 +20,8 @@ import { RevenueReportForm } from "./components/RevenueReportForm";
 import { LedgerDemoPage } from "./pages/LedgerDemoPage";
 import { OfferingRegistrationDemo } from "./pages/OfferingRegistrationDemo";
 import NotificationBell from "./components/Notifications/NotificationBell";
-import { notificationsMock } from "./components/Notifications/notificationsData";
+import { NotificationProvider } from "./components/Notifications/NotificationProvider";
+import NotificationSettingsPage from "./pages/NotificationSettingsPage";
 import { OfferingWizardSummary } from "./pages/OfferingWizardSummary";
 import { ScheduledExportsPage } from "./pages/ScheduledExportsPage";
 import { StartupDashboard } from "./pages/StartupDashboard";
@@ -110,6 +111,7 @@ export const routes: RouteObject[] = [
       { path: "/forgot-password", element: <ForgotPassword /> },
       { path: "/recover-2fa", element: <TwoFactorRecoveryPage /> },
       { path: "/settings/2fa/backup-codes", element: <TwoFactorBackupCodesPage /> },
+      { path: "/settings/notifications", element: <NotificationSettingsPage /> },
 
       // Startup routes
       { path: "/startup", element: <Navigate to="/startup/dashboard" replace /> },
@@ -158,7 +160,7 @@ function AppLayout() {
   };
 
   return (
-    <>
+    <NotificationProvider>
       <a href="#main-content" className="skip-link" onClick={handleSkipToContent}>
         Skip to main content
       </a>
@@ -170,22 +172,19 @@ function AppLayout() {
           <NavLink to="/admin" className="site-link">Admin</NavLink>
           <a href={REPO_URL} className="site-link" target="_blank" rel="noopener noreferrer">GitHub</a>
         </nav>
+        <NotificationBell />
       </header>
       <main id="main-content" tabIndex={-1}>
         <Outlet />
       </main>
       <SiteFooter />
-    </>
+    </NotificationProvider>
   );
 }
 
 function Home() {
   return (
     <div className="home-container animate-fade-in">
-      {/* Header bar with notification bell */}
-      <div className="w-full flex justify-end mb-4">
-        <NotificationBell notifications={notificationsMock} />
-      </div>
       <div className="home-card glass-card">
         <h1 className="home-title">
           Revora on <span className="text-primary">Stellar</span>
@@ -243,6 +242,11 @@ function Home() {
               <li><Link to="/admin/scheduled-exports" className="link-styled">Scheduled exports</Link></li>
               <li><Link to="/settings/2fa/backup-codes" className="link-styled">2FA backup codes</Link></li>
               <li><Link to="/recover-2fa" className="link-styled">2FA recovery</Link></li>
+              <li>• <Link to="/admin/alerts" className="link-styled">Alerts inbox</Link></li>
+              <li>• <Link to="/admin/scheduled-exports" className="link-styled">Scheduled exports</Link></li>
+              <li>• <Link to="/settings/notifications" className="link-styled">Notification preferences</Link></li>
+              <li>• <Link to="/settings/2fa/backup-codes" className="link-styled">2FA backup codes</Link></li>
+              <li>• <Link to="/recover-2fa" className="link-styled">2FA recovery</Link></li>
             </ul>
           </section>
         </div>

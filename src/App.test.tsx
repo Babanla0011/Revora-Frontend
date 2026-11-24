@@ -153,5 +153,17 @@ describe('App Components Accessibility', () => {
     const investItem = screen.getByText('Invest using USDC on Stellar');
     expect(investItem.tagName.toLowerCase()).toBe('li');
     expect(investItem.querySelector('a')).toBeNull();
+  it.each(['/', '/startup/dashboard', '/investor/portal', '/settings/notifications'])(
+    'renders the notification bell in the header on %s',
+    (path) => {
+      renderAtPath(path);
+      expect(screen.getByTestId('notification-bell')).toBeInTheDocument();
+    },
+  );
+
+  it('renders the notification preferences route', () => {
+    renderAtPath('/settings/notifications');
+    expect(screen.getByRole('heading', { name: 'Notification settings' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /notification preferences/i, level: 2 })).toBeInTheDocument();
   });
 });
