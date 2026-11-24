@@ -23,6 +23,7 @@ import { formatKeyLabels } from "./utils/keyLabels";
 import { ForgotPassword } from "./pages/ForgotPassword";
 import { TwoFactorRecoveryPage } from "./pages/TwoFactorRecoveryPage";
 import TwoFactorBackupCodesPage from "./pages/TwoFactorBackupCodesPage";
+import { SecuritySettingsPage } from "./pages/SecuritySettingsPage";
 import { DesignTokensPage } from "./pages/DesignTokens/DesignTokensPage";
 import { InvestorDiscovery } from "./components/InvestorDiscovery"; // Import here
 import { InvestorPortfolioSummary } from "./pages/InvestorPortfolioSummary";
@@ -122,6 +123,7 @@ export const routes: RouteObject[] = [
       { path: "/recover-2fa", element: <TwoFactorRecoveryPage /> },
       { path: "/settings/2fa/backup-codes", element: <TwoFactorBackupCodesPage /> },
       { path: "/settings/notifications", element: <NotificationSettingsPage /> },
+      { path: "/settings/security", element: <SecuritySettingsPage /> },
 
       // Startup routes
       { path: "/startup", element: <Navigate to="/startup/dashboard" replace /> },
@@ -224,6 +226,7 @@ function AppLayout() {
           <Link to="/startup/dashboard" className="site-link">{t("header.startup")}</Link>
           <Link to="/investor/portal" className="site-link">{t("header.investor")}</Link>
           <Link to="/admin/alerts" className="site-link">{t("header.admin")}</Link>
+          <NavLink to="/settings/security" className="site-link">Security</NavLink>
           <a href={REPO_URL} className="site-link" target="_blank" rel="noopener noreferrer">GitHub</a>
           <button
             type="button"
