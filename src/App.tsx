@@ -45,6 +45,7 @@ import { GovernanceProposalsProvider } from "./context/GovernanceProposalsContex
 import { AdminAlertsInbox } from "./pages/AdminAlertsInbox";
 import { PayoutSchedule } from "./pages/PayoutSchedule";
 import { GovernanceVoteReceiptDemo } from "./pages/GovernanceVoteReceiptDemo";
+import { SettingsPage } from "./pages/SettingsPage";
 import { useContractRead } from "./hooks/useContractRead";
 import { getContractSummary } from "./lib/soroban/revoraContract";
 import {
@@ -124,6 +125,8 @@ export const routes: RouteObject[] = [
       { path: "/signup", element: <Signup /> },
       { path: "/forgot-password", element: <ForgotPassword /> },
       { path: "/recover-2fa", element: <TwoFactorRecoveryPage /> },
+      { path: "/settings", element: <SettingsPage /> },
+      { path: "/settings/:tab", element: <SettingsPage /> },
       { path: "/settings/2fa/backup-codes", element: <TwoFactorBackupCodesPage /> },
       { path: "/settings/notifications", element: <NotificationSettingsPage /> },
       { path: "/settings/security", element: <SecuritySettingsPage /> },
@@ -234,6 +237,7 @@ function AppLayout() {
           <Link to="/investor/portal" className="site-link">{t("header.investor")}</Link>
           <Link to="/admin/alerts" className="site-link">{t("header.admin")}</Link>
           <NavLink to="/settings/security" className="site-link">Security</NavLink>
+          <NavLink to="/settings" className="site-link">Settings</NavLink>
           <a href={REPO_URL} className="site-link" target="_blank" rel="noopener noreferrer">GitHub</a>
           <button
             type="button"

@@ -217,6 +217,8 @@ describe('App Components Accessibility', () => {
     ['/startup/dashboard', 'Startup'],
     ['/investor/portfolio', 'Investor'],
     ['/admin/alerts', 'Admin'],
+    ['/settings', 'Settings'],
+    ['/settings/compliance', 'Settings'],
   ])('marks exactly one primary nav link as current on %s', (path, activeName) => {
     renderAtPath(path);
 
