@@ -12,6 +12,7 @@ import {
   AlertCircle,
 } from 'lucide-react';
 import { RegenerateCodesDialog } from '../components/RegenerateCodesDialog';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import '../components/TwoFactorSetup.css';
 
 const DEFAULT_CODES = [
@@ -38,6 +39,7 @@ const TwoFactorBackupCodesPage: React.FC<TwoFactorBackupCodesPageProps> = ({
   codes: propCodes,
   onRegenerateCodes,
 }) => {
+  useDocumentTitle('2FA Backup Codes');
   const [codes, setCodes] = useState<string[]>(() => propCodes ?? initialCodes ?? DEFAULT_CODES);
   const [revealed, setRevealed] = useState<boolean[]>(() => new Array(codes.length).fill(false));
   const [allRevealed, setAllRevealed] = useState(false);

@@ -25,6 +25,7 @@ Deployed on the Stellar **testnet** (no real funds):
 - Startup: issuer dashboard, monthly revenue reporting, offering registration wizard with document uploader, governance proposal creation and vote receipt
 - Investor: offering discovery with filters, portfolio summary (allocation, performance), virtualized ledger table, payout schedule (Gantt/timeline)
 - Admin: alerts inbox, scheduled exports
+- Keyboard navigation: open the command palette with Cmd/Ctrl+K, search and navigate to app pages, and press `?` to view shortcuts (Escape closes either overlay)
 - Design system: tokens, density modes, empty/error states, status timelines, notification bell, command palette, RTL and accessibility guidelines
 
 ## Quickstart
@@ -43,6 +44,8 @@ npm run dev        # http://localhost:5173
 | `npm run dev` | Start the Vite dev server |
 | `npm run build` | Production build into `dist/` |
 | `npm run preview` | Serve the production build locally |
+| `npm run lint` | ESLint over `src/` |
+| `npm run validate:terminology` | Check production TypeScript copy for prohibited terms (ignores comments, URLs, tests, and the terminology reference) |
 | `npm run lint` | ESLint over `src/`, including tests (see [Linting](#linting)) |
 | `npm test` | Vitest with coverage (`npm run test:watch` to watch) |
 
@@ -75,9 +78,9 @@ None are required. The app runs entirely client-side with mock data.
 ## Routes
 
 `/`, `/login`, `/signup`, `/forgot-password`, `/recover-2fa`, `/settings/2fa/backup-codes`,
-`/startup/dashboard`, `/startup/report-revenue`, `/startup/offering-registration`,
+`/startup/dashboard`, `/startup/revenue-calendar`, `/startup/report-revenue`, `/startup/offering-registration`,
 `/startup/governance/proposals/create`, `/startup/governance/vote-receipt`,
-`/investor/portal`, `/investor/portfolio`, `/investor/ledger`, `/investor/payouts`,
+`/investor/portal`, `/offerings/:id`, `/investor/portfolio`, `/investor/ledger`, `/investor/payouts`,
 `/admin/alerts`, `/admin/scheduled-exports`. Unknown paths show a "Page not found" screen.
 
 ## Deploy
@@ -100,6 +103,18 @@ plus accessibility, RTL and responsive guidelines).
 
 GitHub Actions (`.github/workflows/ci.yml`) installs dependencies and runs the production build
 on every push and pull request to `master`.
+
+## Test Coverage Policy
+
+Vitest measures coverage across all of `src/**/*.{ts,tsx}` using the V8 provider (`npm test`).
+
+- **Global floor:** Configured in `vite.config.ts` (`lines: 90`, `statements: 89`, `functions: 87`, `branches: 85`) so regressions anywhere in `src/` fail CI.
+- **Per-file thresholds:** High-criticality modules keep their stricter per-file floors in `vite.config.ts`.
+- **Documented excludes:** Only non-production or type-only files are excluded from coverage:
+  - Test files and test setup (`src/**/*.test.{ts,tsx}`, `src/**/*.spec.{ts,tsx}`, `src/test/**`, `src/setupTests.ts`)
+  - Type definitions (`src/**/*.d.ts`, `src/pages/DistributionDashboard.types.ts`)
+  - Application entry point (`src/main.tsx`)
+  - Standalone demo pages (`src/pages/*Demo*.tsx`)
 
 ## Known limitations
 

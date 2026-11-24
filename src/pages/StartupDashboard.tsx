@@ -6,7 +6,7 @@
  */
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IssuerDashboardHero } from '../components/IssuerDashboardHero';
 import type {
   IssuerKpiData,
@@ -14,6 +14,10 @@ import type {
   IssuerDashboardHeroProps,
 } from '../components/IssuerDashboardHero';
 import { RevenueReportingCalendar } from '../components/RevenueReportingCalendar';
+import type { RevenueReport, ReportStatus } from '../components/RevenueReportingCalendar.types';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
+import { useRevenueReports } from '../lib/revenueReportsStore';
+import { revenueSubmissionUrl } from './RevenueReportSubmission';
 import type { RevenueReport } from '../components/RevenueReportingCalendar.types';
 
 /* ─── Helper ────────────────────────────────────────────────────────── */
@@ -52,45 +56,6 @@ const mockNextPayout: NextPayout = {
   estimatedAmount: 8750,
   currency: 'USD',
 };
-
-const today = new Date();
-const y = today.getFullYear();
-const m = today.getMonth();
-
-const mockReports: RevenueReport[] = [
-  {
-    id: 'rpt-001',
-    date: `${y}-${String(m + 1).padStart(2, '0')}-05`,
-    dueDate: `${y}-${String(m + 1).padStart(2, '0')}-05`,
-    status: 'accepted',
-    grossRevenue: 125000,
-    currency: 'USD',
-    locale: 'en-US',
-    acceptedAt: `${y}-${String(m + 1).padStart(2, '0')}-08`,
-    notes: 'Q2 revenue report approved.',
-  },
-  {
-    id: 'rpt-002',
-    date: `${y}-${String(m + 1).padStart(2, '0')}-12`,
-    dueDate: `${y}-${String(m + 1).padStart(2, '0')}-12`,
-    status: 'submitted',
-    grossRevenue: 98000,
-    currency: 'USD',
-    locale: 'en-US',
-    submittedAt: `${y}-${String(m + 1).padStart(2, '0')}-10`,
-  },
-  {
-    id: 'rpt-003',
-    date: isoRelative(4),
-    dueDate: isoRelative(4),
-    status: 'due',
-    grossRevenue: undefined,
-    currency: 'USD',
-    locale: 'en-US',
-  },
-];
-
-/* ─── Scenario switcher (demo / dev only) ───────────────────────────── */
 
 type Scenario =
   | 'nominal'
@@ -173,6 +138,9 @@ const scenarios: Record<Scenario, ScenarioConfig> = {
 /* ─── Page component ────────────────────────────────────────────────── */
 
 export const StartupDashboard: React.FC = () => {
+  useDocumentTitle('Startup Dashboard');
+  const { reports, store } = useRevenueReports();
+  const navigate = useNavigate();
   const [activeScenario, setActiveScenario] = useState<Scenario>('due-soon');
   const [selectedDate, setSelectedDate] = useState<string | undefined>(undefined);
   const [viewMonth, setViewMonth] = useState<string | undefined>(undefined);
@@ -222,7 +190,7 @@ export const StartupDashboard: React.FC = () => {
       <IssuerDashboardHero {...heroProps} />
 
       {/* ── Revenue Reporting Calendar ── */}
-      <section aria-labelledby="calendar-section-heading">
+      <div>
         <h2
           id="calendar-section-heading"
           className="text-xl font-semibold text-main mb-4"
@@ -230,20 +198,29 @@ export const StartupDashboard: React.FC = () => {
           Revenue Reporting Calendar
         </h2>
         <RevenueReportingCalendar
-          reports={mockReports}
+          reports={reports}
+          onImportReports={(rows) => {
+            const imported = store.importRows(rows);
+            if (imported[0]) { setViewMonth(imported[0].date.slice(0, 7)); setSelectedDate(imported[0].date); }
+          }}
           selectedDate={selectedDate}
           viewMonth={viewMonth}
           locale="en-US"
           weekStartsOn={0}
           onDateSelect={setSelectedDate}
           onMonthChange={setViewMonth}
-          onSubmitReport={(date) => alert(`Submit report for ${date}`)}
-          onReportAction={(id, action) => alert(`Action "${action}" on ${id}`)}
+          onSubmitReport={(date) => navigate(revenueSubmissionUrl(date))}
         />
-      </section>
+      </div>
 
       {/* ── Navigation ── */}
-      <nav aria-label="Startup navigation" className="flex gap-4 text-sm">
+      <nav aria-label="Startup navigation" className="flex flex-wrap gap-4 text-sm">
+        <Link to="/startup/kyc" className="link-styled">
+          Complete identity verification (KYC)
+        </Link>
+        <Link to="/startup/revenue-calendar" className="link-styled">
+          Revenue Calendar, Import and Exports
+        </Link>
         <Link to="/startup/report-revenue" className="link-styled">
           Submit Revenue Report
         </Link>

@@ -62,6 +62,15 @@ import {
   getOverdueSeverity,
 } from './RevenueReportingCalendar.types';
 import RevenueCalendarCsvImport from './RevenueCalendarCsvImport';
+import {
+  toISODate,
+  parseISODate,
+  getDaysInMonth,
+  isOverdue,
+  getMonthReports,
+  buildDayCells,
+  getVariance,
+} from '../utils/calendar';
 import './RevenueReportingCalendar.css';
 
 /* ─── Helpers ──────────────────────────────────────────────────────── */
@@ -330,24 +339,6 @@ function getPreviewPlacement(
     : 'bottom';
   const horizontal = spaceRight >= previewWidth ? '' : '-start';
   return `${vertical}${horizontal}` as PreviewPlacement;
-}
-
-/* ─── Variance Helper ──────────────────────────────────────────────── */
-
-/** Compute variance of current report vs prior-period report */
-function getVariance(
-  current: RevenueReport[],
-  prior: RevenueReport[],
-): { pct: number | null; direction: 'up' | 'down' | 'flat' } {
-  const curRev = current.reduce((s, r) => s + (r.grossRevenue ?? 0), 0);
-  const priorRev = prior.reduce((s, r) => s + (r.grossRevenue ?? 0), 0);
-  if (priorRev === 0 && curRev === 0) return { pct: null, direction: 'flat' };
-  if (priorRev === 0) return { pct: null, direction: 'up' };
-  const pct = ((curRev - priorRev) / priorRev) * 100;
-  return {
-    pct,
-    direction: pct > 0.5 ? 'up' : pct < -0.5 ? 'down' : 'flat',
-  };
 }
 
 /* ─── Spark Trend ──────────────────────────────────────────────────── */
@@ -811,7 +802,6 @@ const CalendarGridComponent: React.FC<CalendarGridComponentProps> = ({
             key={i}
             className="rc-grid-header-cell"
             role="columnheader"
-            aria-hidden="true"
           >
             {name}
           </div>
@@ -976,7 +966,7 @@ const DetailsPanel: React.FC<DetailsPanelProps> = ({
   });
 
   return (
-    <aside
+    <section
       className={`rc-details-panel ${isOpen ? "rc-details-panel--open" : "rc-details-panel--closed"}`}
       aria-label="Report details panel"
     >
@@ -1114,7 +1104,7 @@ const DetailsPanel: React.FC<DetailsPanelProps> = ({
           )}
         </div>
       )}
-    </aside>
+    </section>
   );
 };
 
@@ -1232,6 +1222,7 @@ export const RevenueReportingCalendar: React.FC<
   error = null,
   locale = "en-US",
   weekStartsOn = 0, // Sunday by default
+  onImportReports,
   onDateSelect,
   onDatesSelect,
   onMonthChange,
@@ -1603,9 +1594,8 @@ export const RevenueReportingCalendar: React.FC<
           <RevenueCalendarCsvImport 
             onCancel={() => setShowImportWizard(false)}
             onImport={(rows) => {
-              console.log('Imported rows:', rows);
+              onImportReports?.(rows);
               setShowImportWizard(false);
-              // Handle import logic here
             }}
           />
         </div>

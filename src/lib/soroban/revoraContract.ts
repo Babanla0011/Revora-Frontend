@@ -34,6 +34,7 @@ export const CONTRACT_METHODS = {
   GET_BENEFICIARIES: 'get_beneficiaries',
   UNCLAIMED_SUMMARY: 'unclaimed_summary',
   GET_AUTHORIZED_OFFERINGS: 'get_authorized_offerings',
+  CLAIM: 'claim',
 } as const;
 
 /**
@@ -65,6 +66,11 @@ export const createRpcServer = () => new rpc.Server(RPC_URL);
  */
 let _rpcServerFactory = createRpcServer;
 
+export function getRpcServer() {
+  return _rpcServerFactory();
+}
+
+export function setRpcServerFactory(factory: () => any) {
 export function setRpcServerFactory(factory: () => ReturnType<typeof createRpcServer>) {
   _rpcServerFactory = factory;
 }

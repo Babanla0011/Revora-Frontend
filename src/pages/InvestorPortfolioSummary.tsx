@@ -4,6 +4,8 @@ import { ArrowLeft } from "lucide-react";
 import { DashboardHero, KPIData } from "../components/DashboardHero";
 import { AllocationWidget, AllocationSlice } from "../components/AllocationWidget";
 import { PerformanceTrendWidget, PerformanceDataPoint } from "../components/PerformanceTrendWidget";
+import { InvestorStatement, usePrintStatement } from "../components/InvestorStatement";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { usePrintStatement } from "../components/InvestorStatement";
 
 // ─── Mock data (replace with real API call) ───────────────────────────────────
@@ -39,6 +41,7 @@ export const InvestorPortfolioSummary: React.FC<InvestorPortfolioSummaryProps> =
   __allocations = MOCK_ALLOCATIONS,
   __performance = MOCK_PERFORMANCE,
 }) => {
+  useDocumentTitle("Investor Portfolio");
   const totalInvested = __allocations.reduce((s, a) => s + a.value, 0);
   const currentValue = __performance.length > 0 ? __performance[__performance.length - 1].value : totalInvested;
   const totalReturn = totalInvested > 0 ? ((currentValue - totalInvested) / totalInvested) * 100 : 0;
