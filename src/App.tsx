@@ -53,6 +53,7 @@ import { GovernanceDelegationPage } from "./pages/GovernanceDelegationPage";
 import { GovernanceProposalsProvider } from "./context/GovernanceProposalsContext";
 import { AdminAlertsInbox } from "./pages/AdminAlertsInbox";
 import { PayoutSchedule } from "./pages/PayoutSchedule";
+import { MultiIssuerComparisonView } from "./pages/MultiIssuerComparisonView";
 import { GovernanceVoteReceiptDemo } from "./pages/GovernanceVoteReceiptDemo";
 import { SettingsPage } from "./pages/SettingsPage";
 import { useContractRead } from "./hooks/useContractRead";
@@ -170,6 +171,13 @@ export const routes: RouteObject[] = [
           { path: "ledger", element: <LedgerDemoPage /> },
         ],
       },
+      { path: "/investor", element: <Navigate to="/investor/portal" replace /> },
+      { path: "/investor/portal", element: <InvestorDiscovery /> },
+      { path: "/investor/portfolio", element: <InvestorPortfolioSummary /> },
+      { path: "/investor/payouts", element: <PayoutSchedule /> },
+      { path: "/investor/compare", element: <MultiIssuerComparisonView /> },
+      // Issue #139 – Virtualized Ledger Table
+      { path: "/investor/ledger", element: <LedgerDemoPage /> },
 
       // Admin routes
       {
@@ -422,6 +430,7 @@ function Home() {
               <li><Link to="/investor/portal" className="link-styled">Discover offerings</Link></li>
               <li>Invest using USDC on Stellar</li>
               <li><Link to="/investor/portfolio" className="link-styled">View portfolio summary</Link></li>
+              <li><Link to="/investor/compare" className="link-styled">Compare issuers</Link></li>
               <li><Link to="/investor/ledger" className="link-styled">Browse ledger entries</Link></li>
               <li><Link to="/investor/payouts" className="link-styled">View payout schedule</Link></li>
               <li>• <Link to="/investor/portal" className="link-styled">{t("home.discover-offerings")}</Link></li>

@@ -171,6 +171,14 @@ describe('App Components Accessibility', () => {
     ["/investor/portal", "Discover Offerings", INVESTOR],
   ])("renders the existing route %s", (path, heading, user) => {
     renderAtPath(path, user);
+    ["/login", "Welcome to Revora"],
+    ["/signup", "Choose your account type"],
+    ["/forgot-password", "Forgot Password?"],
+    ["/startup/dashboard", "Acme Corp Dashboard"],
+    ["/investor/portal", "Discover Offerings"],
+    ["/investor/compare", "Multi-Issuer Comparison"],
+  ])("renders the existing route %s", (path, heading) => {
+    renderAtPath(path);
     expect(
       screen.getByRole("heading", { name: heading }),
     ).toBeInTheDocument();
