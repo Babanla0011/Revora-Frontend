@@ -61,10 +61,14 @@ import { SettingsPage } from "./pages/SettingsPage";
   useLocation,
 } from "react-router-dom";
 import NotificationBell from "./components/Notifications/NotificationBell";
+  useLocation,
+} from "react-router-dom";
+import NotificationBell from "./components/Notifications/NotificationBell";
 import { notificationsMock } from "./components/Notifications/notificationsData";
 import { PageLoader } from "./components/PageLoader";
 import { RouteErrorBoundary } from "./components/RouteErrorBoundary";
 import { useContractRead } from "./hooks/useContractRead";
+import { useDocumentTitle } from "./hooks/useDocumentTitle";
 import {
   CONTRACT_ID,
   buildContractExplorerUrl,
@@ -72,6 +76,54 @@ import {
 } from "./constants/stellar";
 import { ThemeToggle } from "./components/ThemeToggle";
 import { LIVE_URL, REPO_URL } from "./constants/links";
+
+const Login = lazy(() => import("./pages/Login").then((m) => ({ default: m.Login })));
+const Signup = lazy(() => import("./pages/Signup").then((m) => ({ default: m.Signup })));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword").then((m) => ({ default: m.ForgotPassword })));
+const TwoFactorRecoveryPage = lazy(() =>
+  import("./pages/TwoFactorRecoveryPage").then((m) => ({ default: m.TwoFactorRecoveryPage })),
+);
+const TwoFactorBackupCodesPage = lazy(() => import("./pages/TwoFactorBackupCodesPage"));
+const InvestorDiscovery = lazy(() =>
+  import("./components/InvestorDiscovery").then((m) => ({ default: m.InvestorDiscovery })),
+);
+const InvestorPortfolioSummary = lazy(() =>
+  import("./pages/InvestorPortfolioSummary").then((m) => ({ default: m.InvestorPortfolioSummary })),
+);
+const RevenueReportForm = lazy(() =>
+  import("./components/RevenueReportForm").then((m) => ({ default: m.RevenueReportForm })),
+);
+const LedgerDemoPage = lazy(() =>
+  import("./pages/LedgerDemoPage").then((m) => ({ default: m.LedgerDemoPage })),
+);
+const OfferingRegistrationDemo = lazy(() =>
+  import("./pages/OfferingRegistrationDemo").then((m) => ({ default: m.OfferingRegistrationDemo })),
+);
+const ScheduledExportsPage = lazy(() =>
+  import("./pages/ScheduledExportsPage").then((m) => ({ default: m.ScheduledExportsPage })),
+);
+const StartupDashboard = lazy(() =>
+  import("./pages/StartupDashboard").then((m) => ({ default: m.StartupDashboard })),
+);
+const KycWizardPage = lazy(() =>
+  import("./pages/KycWizardPage").then((m) => ({ default: m.KycWizardPage })),
+);
+const GovernanceProposalCreatePage = lazy(() =>
+  import("./pages/GovernanceProposalCreatePage").then((m) => ({
+    default: m.GovernanceProposalCreatePage,
+  })),
+);
+const AdminAlertsInbox = lazy(() =>
+  import("./pages/AdminAlertsInbox").then((m) => ({ default: m.AdminAlertsInbox })),
+);
+const PayoutSchedule = lazy(() =>
+  import("./pages/PayoutSchedule").then((m) => ({ default: m.PayoutSchedule })),
+);
+const GovernanceVoteReceiptDemo = lazy(() =>
+  import("./pages/GovernanceVoteReceiptDemo").then((m) => ({
+    default: m.GovernanceVoteReceiptDemo,
+  })),
+);
 
 const Login = lazy(() => import("./pages/Login").then((m) => ({ default: m.Login })));
 const Signup = lazy(() => import("./pages/Signup").then((m) => ({ default: m.Signup })));
@@ -432,6 +484,8 @@ function AppLayout() {
 
 function Home() {
   const { t } = useI18n();
+  useDocumentTitle("Home");
+
   return (
     <div className="home-container animate-fade-in">
       <div className="home-card glass-card">
@@ -559,6 +613,8 @@ function Home() {
 }
 
 function Placeholder({ title }: { title: string }) {
+  useDocumentTitle(title);
+
   return (
     <div className="placeholder-container">
       <div className="placeholder-card glass-card">

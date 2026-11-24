@@ -27,6 +27,7 @@ import { parseMoneyInput, computePayoutEstimateCents, formatCentsAsCurrency } fr
 import { FormError } from "./FormError";
 import { ApiError, normalizeError } from "../lib/api/errors";
 import { submitRevenueReport } from "../lib/api/revenueReports";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 const currencyOptions = [
   { value: "USD", label: "USD - US Dollar" },
@@ -88,6 +89,7 @@ function downloadBlob(blob: Blob, fileName: string): void {
 }
 
 export function RevenueReportForm() {
+  useDocumentTitle("Report Revenue");
   const [reportPeriod, setReportPeriod] = useState(reportPeriods[0].value);
   const [grossRevenue, setGrossRevenue] = useState("");
   const [currency, setCurrency] = useState("USD");

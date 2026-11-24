@@ -31,6 +31,10 @@ export const Login: React.FC = () => {
   const [searchParams] = useSearchParams();
   const nextParam = searchParams.get('next');
 
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
+
+export const Login: React.FC = () => {
+  useDocumentTitle('Sign In');
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState<AuthRole>(() => inferRoleFromTargetPath(nextParam) ?? 'startup');

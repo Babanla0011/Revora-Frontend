@@ -9,8 +9,10 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GovernanceProposalForm, ProposalDraft } from '../components/GovernanceProposalForm/GovernanceProposalForm';
 import { useOptionalGovernanceProposals } from '../context/GovernanceProposalsContext';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 
 export const GovernanceProposalCreatePage: React.FC = () => {
+  useDocumentTitle('Create Governance Proposal');
   const navigate = useNavigate();
   const store = useOptionalGovernanceProposals();
 

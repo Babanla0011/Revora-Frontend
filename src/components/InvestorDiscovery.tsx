@@ -31,6 +31,7 @@ import {
   isDiscoverySortOption,
   syncDiscoveryFiltersToUrl,
 } from "./investorDiscoveryFilters";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 // ─── Skeleton Loading Card ─────────────────────────────────────────────────────
 
@@ -556,6 +557,7 @@ export const InvestorDiscovery: React.FC<InvestorDiscoveryProps> = ({
   __onRetry,
   pageSize = DISCOVERY_PAGE_SIZE,
 }) => {
+  useDocumentTitle("Investor Portal");
   const [isLoading, setIsLoading] = useState(
     typeof process !== "undefined" && process.env.NODE_ENV === "test" ? false : true
   );

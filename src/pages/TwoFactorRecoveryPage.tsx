@@ -9,6 +9,7 @@ import {
   verifyRecoveryCode,
   resendRecoveryCode,
 } from '../lib/api/twoFactorRecovery';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 
 /**
  * Two-factor recovery page.
@@ -20,6 +21,7 @@ import {
  */
 
 export const TwoFactorRecoveryPage: React.FC = () => {
+  useDocumentTitle('2FA Recovery');
   const navigate = useNavigate();
   const isDemoMode =
     import.meta.env.DEV || import.meta.env.VITE_DEMO_MODE === 'true';

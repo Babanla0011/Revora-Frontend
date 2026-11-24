@@ -14,6 +14,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import ConfirmationNextSteps from '../components/ConfirmationNextSteps';
 import { Button } from '../components/Button';
 import { useI18n } from '../i18n/I18nProvider';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 
 type Step = 'persona' | 'form' | 'success';
 
@@ -24,6 +25,7 @@ export const Signup: React.FC = () => {
   const [searchParams] = useSearchParams();
   const nextParam = searchParams.get('next');
 
+  useDocumentTitle('Sign Up');
   const [step, setStep] = useState<Step>('persona');
   const [persona, setPersona] = useState<'startup' | 'investor' | null>(null);
   const [email, setEmail] = useState('');

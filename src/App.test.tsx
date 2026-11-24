@@ -1,6 +1,7 @@
 import type { ReactElement } from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { render, screen, waitFor, within } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
@@ -420,5 +421,27 @@ describe('Role-aware header navigation', () => {
     }
     expect(within(nav).getByRole('button', { name: 'Sign out' })).toBeInTheDocument();
     expect(within(nav).queryByRole('link', { name: 'Sign in' })).not.toBeInTheDocument();
+  });
+
+  it.each([
+    ['/', 'Home - Revora'],
+    ['/login', 'Sign In - Revora'],
+    ['/signup', 'Sign Up - Revora'],
+    ['/forgot-password', 'Forgot Password - Revora'],
+    ['/startup/dashboard', 'Startup Dashboard - Revora'],
+    ['/investor/portal', 'Investor Portal - Revora'],
+    ['/admin/alerts', 'Admin Alerts - Revora'],
+    ['/non-existent-route', 'Page not found - Revora'],
+  ])('sets document.title to %s on route %s', async (path, expectedTitle) => {
+    const previousTitle = document.title;
+    const { unmount } = renderAtPath(path);
+    await waitFor(
+      () => {
+        expect(document.title).toBe(expectedTitle);
+      },
+      { timeout: 10000 },
+    );
+    unmount();
+    expect(document.title).toBe(previousTitle);
   });
 });
